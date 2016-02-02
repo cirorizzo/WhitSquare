@@ -12,7 +12,6 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
 import java.io.IOException;
-import java.io.Reader;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class WhitSquarePresenterImpl implements WhitSquarePresenter {
@@ -70,7 +69,7 @@ public class WhitSquarePresenterImpl implements WhitSquarePresenter {
                     }
 
                     // Deserializing Data
-                    mainViewInterface.setData(new Venues(context).setVenues(response.body().charStream())); //convertReader(response.body().charStream())));
+                    mainViewInterface.setData(new Venues(context).setVenues(response.body().charStream()));
                 }
             });
         }
@@ -86,10 +85,5 @@ public class WhitSquarePresenterImpl implements WhitSquarePresenter {
 
     private void setMessageUI(String message) {
         mainViewInterface.setMessage(message);
-    }
-
-    private String convertReader(Reader is) {
-        java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
-        return s.hasNext() ? s.next() : "";
     }
 }
