@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
     }
 
     private void connectingToPresenter() {
+        // Using WeakReference to reduce Memory Leaks
         whitSquarePresenter = new WeakReference(WhitSquarePresenterImpl.getInstance());
         whitSquarePresenter.get().connect(this);
     }
