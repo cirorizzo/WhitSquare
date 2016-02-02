@@ -59,7 +59,6 @@ public class WhitSquarePresenterImpl implements WhitSquarePresenter {
                     isExecuting.set(false);
                 }
 
-
                 @Override
                 public void onResponse(Response response) throws IOException {
                     isExecuting.set(false);
