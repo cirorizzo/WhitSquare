@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view"
+        android:layout_gravity="center"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        card_view:cardCornerRadius="4dp"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="@android:color/transparent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/imgVw_icon_venue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp" />
+
+            <TextView
+                android:id="@+id/txtVw_name_venue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="txtVw_name_venue"
+                android:textSize="@dimen/venue_name_title_size"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                android:lines="1"
+                android:ellipsize="marquee"
+                android:singleLine="true"
+                android:layout_alignTop="@+id/imgVw_icon_venue"
+                android:layout_toRightOf="@+id/imgVw_icon_venue" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="New Text"
+                android:id="@+id/txtVw_location_venue"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="@dimen/venue_text_size"
+                android:layout_below="@+id/txtVw_name_venue"
+                android:layout_toEndOf="@+id/imgVw_icon_venue" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="New Text"
+                android:id="@+id/txtVw_url_venue"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="@dimen/venue_text_size"
+                android:layout_below="@+id/txtVw_location_venue"
+                android:layout_toEndOf="@+id/imgVw_icon_venue" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/rating_label"
+                android:id="@+id/txtVw_rating_label"
+                android:layout_below="@+id/txtVw_url_venue"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="@dimen/venue_text_size"
+                android:layout_toEndOf="@+id/imgVw_icon_venue"
+                android:layout_marginRight="6dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="New Text"
+                android:id="@+id/txtVw_rating_venue"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="@dimen/venue_text_size"
+                android:layout_below="@+id/txtVw_url_venue"
+                android:layout_toRightOf="@+id/txtVw_rating_label" />
+        </RelativeLayout>
+
+
+    </android.support.v7.widget.CardView>
+
+</RelativeLayout>

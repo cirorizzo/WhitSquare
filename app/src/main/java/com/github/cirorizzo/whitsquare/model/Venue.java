@@ -5,6 +5,8 @@ import java.util.List;
 
 /**
  * Foursquare simplified Class to deserialize response data from API
+ * This is the simplest way; instead the automatic deserialization using GSON library using a very large
+ * data class that is not useful for the test purpose
  */
 public class Venue {
     public String name;
