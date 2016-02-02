@@ -17,5 +17,5 @@ This is a simple Android App to explore the Foursquare API
 The project requires a minimum SDK version of 21
 
 ### SetUp
-Before to compile and Run providing to edit the *project.proterty* file (in the project) to use your own CLIENT_ID and CLIENT_SECRET provided by [Foursquare Integration](https://developer.foursquare.com/)
+Before to compile and Run providing to edit the *project.proterties* file (in the project) to use your own CLIENT_ID and CLIENT_SECRET provided by [Foursquare Integration](https://developer.foursquare.com/)
 
