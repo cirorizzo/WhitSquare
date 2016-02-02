@@ -9,9 +9,11 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.github.cirorizzo.whitsquare.R;
+import com.github.cirorizzo.whitsquare.model.Venue;
 import com.github.cirorizzo.whitsquare.presenter.WhitSquarePresenterImpl;
 
 import java.lang.ref.WeakReference;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MainViewInterface {
     private final String TAG = MainActivity.class.getSimpleName();
@@ -38,6 +40,11 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
                 Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    @Override
+    public void setData(List<Venue> venues) {
+
     }
 
     private void connectingToPresenter() {
