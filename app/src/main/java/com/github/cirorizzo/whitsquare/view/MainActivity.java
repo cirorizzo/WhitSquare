@@ -1,21 +1,64 @@
 package com.github.cirorizzo.whitsquare.view;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
+import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.github.cirorizzo.whitsquare.R;
+import com.github.cirorizzo.whitsquare.presenter.WhitSquarePresenterImpl;
+
+import java.lang.ref.WeakReference;
 
 public class MainActivity extends AppCompatActivity implements MainViewInterface {
     private final String TAG = MainActivity.class.getSimpleName();
+
+    private WeakReference<WhitSquarePresenterImpl> whitSquarePresenter;
+    private RecyclerView containerRecyclerView;
+    private SearchView searchVw;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        connectingToPresenter();
+
+        searchVwSetUp();
     }
 
     @Override
-    public void setMessage(String message) {
+    public void setMessage(final String message) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
 
+    private void connectingToPresenter() {
+        whitSquarePresenter = new WeakReference(WhitSquarePresenterImpl.getInstance());
+        whitSquarePresenter.get().connect(this);
+    }
+
+    private void searchVwSetUp() {
+        searchVw = (SearchView) findViewById(R.id.searchVw);
+        searchVw.setSearchableInfo(((SearchManager) getSystemService(Context.SEARCH_SERVICE)).getSearchableInfo(getComponentName()));
+        searchVw.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                whitSquarePresenter.get().getExplore(getApplicationContext(), query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
     }
 }
