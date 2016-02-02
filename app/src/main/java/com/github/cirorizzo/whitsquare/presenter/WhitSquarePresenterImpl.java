@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.github.cirorizzo.whitsquare.BuildConfig;
+import com.github.cirorizzo.whitsquare.model.Venues;
 import com.github.cirorizzo.whitsquare.view.MainViewInterface;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.OkHttpClient;
@@ -62,14 +63,14 @@ public class WhitSquarePresenterImpl implements WhitSquarePresenter {
 
                 @Override
                 public void onResponse(Response response) throws IOException {
+                    isExecuting.set(false);
+
                     if (!response.isSuccessful()) {
                         setMessageUI("Network Error - Unexpected code ");
                     }
 
-                    // Deserialize Data
-
-
-                    isExecuting.set(false);
+                    // Deserializing Data
+                    mainViewInterface.setData(new Venues(context).setVenues(response.body().charStream())); //convertReader(response.body().charStream())));
                 }
             });
         }
@@ -90,6 +91,5 @@ public class WhitSquarePresenterImpl implements WhitSquarePresenter {
     private String convertReader(Reader is) {
         java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
         return s.hasNext() ? s.next() : "";
-
     }
 }

@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface MainViewInterface {
     void setMessage(final String message);
-    void setData(List<Venue> venues);
+    void setData(final List<Venue> venues);
 }
