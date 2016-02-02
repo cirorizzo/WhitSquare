@@ -25,6 +25,7 @@ android {
         buildConfigField "String", "CLIENT_ID", "\"${client_id}\""
         buildConfigField "String", "CLIENT_SECRET", "\"${client_secret}\""
     }
+
     buildTypes {
         release {
             minifyEnabled false
