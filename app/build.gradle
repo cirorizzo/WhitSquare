@@ -1,5 +1,15 @@
 apply plugin: 'com.android.application'
 
+Properties project_props = new Properties()
+try {
+    project_props.load(file('project.properties').newDataInputStream())
+} catch (Exception ex) {
+    throw new GradleException("Missing project.properties file");
+}
+
+ext.client_id = project_props.getProperty('client_id')
+ext.client_secret = project_props.getProperty('client_secret')
+
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
@@ -10,6 +20,10 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+
+        buildConfigField "String", "EXPLORE_API_ENDPOINT", "\"https://api.foursquare.com/v2/venues/explore\""
+        buildConfigField "String", "CLIENT_ID", "\"${client_id}\""
+        buildConfigField "String", "CLIENT_SECRET", "\"${client_secret}\""
     }
     buildTypes {
         release {
@@ -23,4 +37,8 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.android.support:cardview-v7:23.1.1'
+    compile 'com.android.support:recyclerview-v7:23.1.1'
+    compile 'com.github.bumptech.glide:glide:3.6.1'
+    compile "com.squareup.okhttp:okhttp:2.5.0"
 }
