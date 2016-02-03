@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
             @Override
             public boolean onQueryTextSubmit(String query) {
                 whitSquarePresenter.get().getExplore(getApplicationContext(), query);
+                searchVw.clearFocus();
                 return true;
             }
 

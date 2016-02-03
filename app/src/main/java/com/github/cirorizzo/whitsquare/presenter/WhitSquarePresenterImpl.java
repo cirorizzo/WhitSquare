@@ -1,18 +1,25 @@
 package com.github.cirorizzo.whitsquare.presenter;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
 
 import com.github.cirorizzo.whitsquare.BuildConfig;
+import com.github.cirorizzo.whitsquare.R;
+import com.github.cirorizzo.whitsquare.model.Venue;
 import com.github.cirorizzo.whitsquare.model.Venues;
 import com.github.cirorizzo.whitsquare.view.MainViewInterface;
-import com.squareup.okhttp.Callback;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class WhitSquarePresenterImpl implements WhitSquarePresenter {
     private final String TAG = WhitSquarePresenterImpl.class.getSimpleName();
@@ -44,33 +51,43 @@ public class WhitSquarePresenterImpl implements WhitSquarePresenter {
     @Override
     @NonNull
     public void getExplore(final Context context, String place) {
-        if (isExecuting.get() == false) {
+        if (isConnected(context)) {
 
-            isExecuting.set(true);
+            if (isExecuting.get() == false) {
 
-            final Request request = new Request.Builder()
-                    .url(getExploreURL(place))
-                    .build();
+                isExecuting.set(true);
 
-            client.newCall(request).enqueue(new Callback() {
-                @Override
-                public void onFailure(Request request, IOException e) {
-                    setMessageUI("Network Error - Failure" + e.getMessage());
-                    isExecuting.set(false);
-                }
+                final Request request = new Request.Builder()
+                        .url(getExploreURL(place))
+                        .build();
 
-                @Override
-                public void onResponse(Response response) throws IOException {
-                    isExecuting.set(false);
-
-                    if (!response.isSuccessful()) {
-                        setMessageUI("Network Error - Unexpected code ");
+                client.newCall(request).enqueue(new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        isExecuting.set(false);
+                        setMessageUI(context.getString(R.string.general_network_error) + e.getMessage());
                     }
 
-                    // Deserializing Data
-                    mainViewInterface.setData(new Venues(context).setVenues(response.body().charStream()));
-                }
-            });
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        isExecuting.set(false);
+
+                        if (!response.isSuccessful()) {
+                            setMessageUI(getMessageErrore(context, response.code()));
+                        } else {
+                            // Deserializing Data
+                            List<Venue> venues = new Venues(context).setVenues(response.body().charStream());
+                            if (!venues.isEmpty()) {
+                                mainViewInterface.setData(venues);
+                            } else {
+                                setMessageUI(context.getString(R.string.no_venues_found));
+                            }
+                        }
+                    }
+                });
+            }
+        } else {
+            setMessageUI(context.getString(R.string.not_connected));
         }
     }
 
@@ -84,5 +101,24 @@ public class WhitSquarePresenterImpl implements WhitSquarePresenter {
 
     private void setMessageUI(String message) {
         mainViewInterface.setMessage(message);
+    }
+
+    private String getMessageErrore(Context context, int responseCode) {
+        if (responseCode == 400) {
+            return context.getString(R.string.error_code_400);
+        } else if (responseCode == 500) {
+            return context.getString(R.string.error_code_500);
+        }
+
+        return context.getResources().getString(R.string.error_code_4xx);
+    }
+
+    private boolean isConnected(Context context) {
+        ConnectivityManager cm =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
     }
 }
