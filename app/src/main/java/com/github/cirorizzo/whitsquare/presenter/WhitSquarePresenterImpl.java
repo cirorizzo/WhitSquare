@@ -34,7 +34,6 @@ public class WhitSquarePresenterImpl implements WhitSquarePresenter {
         client = new OkHttpClient();
     }
 
-
     public static WhitSquarePresenterImpl getInstance() {
         if (instance == null) {
             instance = new WhitSquarePresenterImpl();
