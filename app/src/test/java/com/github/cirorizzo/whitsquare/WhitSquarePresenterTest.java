@@ -7,10 +7,6 @@ import com.github.cirorizzo.whitsquare.model.Venue;
 import com.github.cirorizzo.whitsquare.model.Venues;
 import com.github.cirorizzo.whitsquare.presenter.WhitSquarePresenterImpl;
 import com.github.cirorizzo.whitsquare.view.MainActivity;
-import com.squareup.okhttp.Callback;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
 
 import org.junit.After;
 import org.junit.Before;
@@ -20,13 +16,16 @@ import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-/**
- * To work on unit tests, switch the Test Artifact in the Build Variants view.
- */
 public class WhitSquarePresenterTest {
     private WeakReference<WhitSquarePresenterImpl> whitSquarePresenter;
     private Context context;
@@ -64,7 +63,6 @@ public class WhitSquarePresenterTest {
 
     @Test
     public void setVenuesTest() {
-
         OkHttpClient client = new OkHttpClient();
 
         String endPointURL = whitSquarePresenter.get().getExploreURL("Napoli");
@@ -75,15 +73,14 @@ public class WhitSquarePresenterTest {
                 .build();
 
         client.newCall(request).enqueue(new Callback() {
+
             @Override
-            public void onFailure(Request request, IOException e) {
+            public void onFailure(Call call, IOException e) {
                 assertNull(e);
             }
 
-
             @Override
-            public void onResponse(Response response) throws IOException {
-
+            public void onResponse(Call call, Response response) throws IOException {
                 List<Venue> venueList = null;
                 if (response.isSuccessful()) {
                     venueList = new Venues(context).setVenues(response.body().charStream());
@@ -93,8 +90,5 @@ public class WhitSquarePresenterTest {
                 assertTrue((venueList.size() > 0));
             }
         });
-
-
-
     }
 }
