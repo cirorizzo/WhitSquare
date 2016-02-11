@@ -21,8 +21,8 @@
 
             <ImageView
                 android:id="@+id/imgVw_icon_venue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/icon_dimen"
+                android:layout_height="@dimen/icon_dimen"
                 android:layout_margin="4dp" />
 
             <TextView

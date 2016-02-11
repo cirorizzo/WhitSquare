@@ -2,4 +2,5 @@
 <resources>
     <dimen name="venue_name_title_size">16sp</dimen>
     <dimen name="venue_text_size">14sp</dimen>
+    <dimen name="icon_dimen">88dp</dimen>
 </resources>

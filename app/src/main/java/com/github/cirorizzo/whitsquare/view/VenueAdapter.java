@@ -56,7 +56,6 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueDataHolder> {
                 .asBitmap()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .fitCenter()
-                .override(context.getResources().getInteger(R.integer.icon_dim_px), context.getResources().getInteger(R.integer.icon_dim_px))
                 .into(holder.imgVw_icon_venue);
     }
 
