@@ -2,10 +2,12 @@ package com.github.cirorizzo.whitsquare.view;
 
 import android.app.SearchManager;
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -29,11 +31,35 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         connectingToPresenter();
 
         initRecyclerView();
 
         searchVwSetUp();
+    }
+
+    @Override
+    public void onBackPressed() {
+        whitSquarePresenter = null;
+        super.onBackPressed();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                whitSquarePresenter = null;
+                onBackPressed();
+                return true;
+        }
+        return false;
     }
 
     @Override
