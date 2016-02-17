@@ -24,23 +24,23 @@ import okhttp3.Response;
 public class WhitSquarePresenterImpl implements WhitSquarePresenter {
     private final String TAG = WhitSquarePresenterImpl.class.getSimpleName();
 
-    private static WhitSquarePresenterImpl instance = null;
+//    private static WhitSquarePresenterImpl instance = null;
     private AtomicBoolean isExecuting;
     private OkHttpClient client;
     private MainViewInterface mainViewInterface;
 
-    protected WhitSquarePresenterImpl() {
+    public WhitSquarePresenterImpl() {
         isExecuting = new AtomicBoolean(false);
         client = new OkHttpClient();
     }
 
-    public static WhitSquarePresenterImpl getInstance() {
-        if (instance == null) {
-            instance = new WhitSquarePresenterImpl();
-        }
-
-        return instance;
-    }
+//    public static WhitSquarePresenterImpl getInstance() {
+//        if (instance == null) {
+//            instance = new WhitSquarePresenterImpl();
+//        }
+//
+//        return instance;
+//    }
 
     @Override
     public void connect(@NonNull MainViewInterface mainViewInterface) {

@@ -15,13 +15,12 @@ import com.github.cirorizzo.whitsquare.R;
 import com.github.cirorizzo.whitsquare.model.Venue;
 import com.github.cirorizzo.whitsquare.presenter.WhitSquarePresenterImpl;
 
-import java.lang.ref.WeakReference;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MainViewInterface {
     private final String TAG = MainActivity.class.getSimpleName();
 
-    private WeakReference<WhitSquarePresenterImpl> whitSquarePresenter;
+    private WhitSquarePresenterImpl whitSquarePresenter;
     private VenueAdapter venueAdapter;
     private RecyclerView containerRecyclerView;
     private SearchView searchVw;
@@ -85,8 +84,8 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
 
     private void connectingToPresenter() {
         // Using WeakReference to reduce Memory Leaks
-        whitSquarePresenter = new WeakReference(WhitSquarePresenterImpl.getInstance());
-        whitSquarePresenter.get().connect(this);
+        whitSquarePresenter = new WhitSquarePresenterImpl();
+        whitSquarePresenter.connect(this);
     }
 
     private void initRecyclerView() {
@@ -102,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
         searchVw.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                whitSquarePresenter.get().getExplore(getApplicationContext(), query);
+                whitSquarePresenter.getExplore(getApplicationContext(), query);
                 searchVw.clearFocus();
                 return true;
             }
