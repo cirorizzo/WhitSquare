@@ -12,6 +12,8 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.github.cirorizzo.whitsquare.R;
+import com.github.cirorizzo.whitsquare.WhitSquareApplication;
+import com.github.cirorizzo.whitsquare.injection.InjectionWhitSquarePresenter;
 import com.github.cirorizzo.whitsquare.model.Venue;
 import com.github.cirorizzo.whitsquare.presenter.WhitSquarePresenterImpl;
 
@@ -20,7 +22,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements MainViewInterface {
     private final String TAG = MainActivity.class.getSimpleName();
 
-    private WhitSquarePresenterImpl whitSquarePresenter;
+    private WhitSquarePresenterImpl whitSquarePresenterImpl;
     private VenueAdapter venueAdapter;
     private RecyclerView containerRecyclerView;
     private SearchView searchVw;
@@ -41,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
 
     @Override
     public void onBackPressed() {
-        whitSquarePresenter = null;
+        whitSquarePresenterImpl = null;
         super.onBackPressed();
     }
 
@@ -54,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                whitSquarePresenter = null;
+                whitSquarePresenterImpl = null;
                 onBackPressed();
                 return true;
         }
@@ -83,9 +85,18 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
     }
 
     private void connectingToPresenter() {
-        // Using WeakReference to reduce Memory Leaks
-        whitSquarePresenter = new WhitSquarePresenterImpl();
-        whitSquarePresenter.connect(this);
+        whitSquarePresenterImpl = new WhitSquarePresenterImpl();
+
+        injectWhitSquarePresenter();
+
+        whitSquarePresenterImpl.connect(this);
+    }
+
+    private void injectWhitSquarePresenter() {
+        WhitSquareApplication whitSquareApplication = (WhitSquareApplication) getApplication();
+        InjectionWhitSquarePresenter injectionWhitSquarePresenter = whitSquareApplication.getInjection();
+
+        whitSquarePresenterImpl = injectionWhitSquarePresenter.provideWhitSquarePresenterImpl();
     }
 
     private void initRecyclerView() {
@@ -101,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
         searchVw.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                whitSquarePresenter.getExplore(getApplicationContext(), query);
+                whitSquarePresenterImpl.getExplore(getApplicationContext(), query);
                 searchVw.clearFocus();
                 return true;
             }
